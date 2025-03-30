@@ -1,0 +1,12 @@
+const actionTypes = {
+    REGISTER_SUCCESS: 'REGISTER_SUCCESS',
+    REGISTER_FAIL: 'REGISTER_FAIL',
+    LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+    LOGIN_FAIL: 'LOGIN_FAIL',
+    LOGOUT: 'LOGOUT',
+
+    //USER
+    GET_CURRENT: 'GET_CURRENT',
+}
+
+export default actionTypes
