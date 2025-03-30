@@ -8,7 +8,7 @@ import { apiDeleteEvent } from '../services';
 const { FiPlus, MdEditAttributes, HiOutlineDotsVertical } = icons
 
 const EventToday = () => {
-    const { currentDate, addEvent, setAddEvent, eventsInDate, loading, error } = useContext(CalendarContext)
+    const { currentDate, addEvent, setAddEvent, eventsInDate, loading, error, currentEvent, setCurrentEvent } = useContext(CalendarContext)
 
     console.log('event in date ' + JSON.stringify(eventsInDate))
 
@@ -43,7 +43,7 @@ const EventToday = () => {
                 <Button
                     text='Thêm sự kiện'
                     textColor='white'
-                    bgColor={addEvent ? 'bg-slate-300' : 'bg-blue-600'}
+                    bgColor={!addEvent ? 'bg-blue-600' : currentEvent ? 'bg-blue-600' : 'bg-slate-300'}
                     IcBefore={FiPlus}
                     fullWidth
                     onClick={() => { setAddEvent(true) }}
@@ -59,8 +59,6 @@ const EventToday = () => {
 const EventItem = ({ event }) => {
     const { loading, error, setLoading, setError, setAddEvent, currentEvent, setCurrentEvent, updateData, setUpdateData } = useContext(CalendarContext)
     const [showHandle, setShowHandle] = useState(false)
-
-
 
     const handleUpdate = () => {
         console.log('Xử lý chỉnh sửa thông tin lịch trình: ' + event.id)
@@ -92,7 +90,7 @@ const EventItem = ({ event }) => {
 
     return (
         <div>
-            <div className={`shadow-md border min-h-[60px] rounded-xl p-2 flex items-center justify-between ${event.completed ? 'bg-blue-300' : 'bg-white'}`}>
+            <div className={`opacity-70 shadow-md border min-h-[60px] rounded-xl p-2 flex items-center justify-between ${event.completed ? 'bg-blue-300' : 'bg-white'}`}>
                 <div className='flex flex-col w-[90%]'>
                     <p className='font-medium'>{event.e_name}</p>
                     {event.e_describe.length < 55 ?

@@ -33,6 +33,19 @@ function AddEvent() {
         setPayload(prev => ({ ...prev, e_date: currentDate.toLocaleDateString('en-CA') }))
     }, [currentDate])
 
+    useEffect(() => {
+        setPayload({
+            id: currentEvent?.id || '',
+            e_name: currentEvent?.e_name || '',
+            e_describe: currentEvent?.e_describe || '',
+            created_by: currentData.id,
+            e_start_time: currentEvent?.e_start_time || '08:00:00',
+            e_end_time: currentEvent?.e_end_time || '09:00:00',
+            e_date: currentDate.toLocaleDateString('en-CA'),
+            status: 'private'
+        })
+    }, [currentEvent])
+
     // const [currentValue, setCurrentValue] = useState(8); // Mặc định là số 08
     // const numbers = Array.from({ length: 24 }, (_, index) => String(index).padStart(2, '0'));
 
