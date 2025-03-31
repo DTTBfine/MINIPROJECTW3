@@ -2,7 +2,7 @@ import React from 'react';
 
 const Explore = () => {
     return (
-        <div className='flex flex-1 flex-col bg-white bg-opacity-80 shadow-lg h-full rounded-xl p-2 gap-6 border'>
+        <div className='flex flex-1 flex-col bg-white bg-opacity-80 shadow-lg h-full rounded-xl p-2 gap-6 border pb-[35px]'>
             <div>
                 <div className='uppercase font-medium text-lg'>
                     Thống kê

@@ -5,10 +5,10 @@ import { CalendarContext } from './Homepage';
 import { formatTime } from '../ultils/format'
 import { apiDeleteEvent } from '../services';
 
-const { FiPlus, MdEditAttributes, HiOutlineDotsVertical } = icons
+const { FiPlus, HiOutlineDotsVertical } = icons
 
 const EventToday = () => {
-    const { currentDate, addEvent, setAddEvent, eventsInDate, loading, error, currentEvent, setCurrentEvent } = useContext(CalendarContext)
+    const { currentDate, addEvent, setAddEvent, eventsInDate, loading, currentEvent, setCurrentEvent } = useContext(CalendarContext)
 
     console.log('event in date ' + JSON.stringify(eventsInDate))
 
@@ -24,7 +24,7 @@ const EventToday = () => {
                     </p>
                 </div>
 
-                <div className='w-full'>
+                <div className='w-full min-h-[450px]  rounded-md my-4 p-3 '>
                     {loading && <p>Loading...</p>}
                     {/* {error && <p className='text-xs text-red-900'>Có lỗi xảy ra, vui lòng reload lại trang...</p>} */}
                     {eventsInDate.length === 0 ? <p className='text-gray-400 text-sm'>
@@ -46,10 +46,13 @@ const EventToday = () => {
                     bgColor={!addEvent ? 'bg-blue-600' : currentEvent ? 'bg-blue-600' : 'bg-slate-300'}
                     IcBefore={FiPlus}
                     fullWidth
-                    onClick={() => { setAddEvent(true) }}
+                    onClick={() => {
+                        setCurrentEvent(null)
+                        setAddEvent(true)
+                    }}
                     rounded='rounded-2xl'
                     fontSize='20'
-                    border='border border-gray-100'
+                    border='border-none shadow-lg'
                 />
             </div>
         </div>
@@ -57,7 +60,7 @@ const EventToday = () => {
 }
 
 const EventItem = ({ event }) => {
-    const { loading, error, setLoading, setError, setAddEvent, currentEvent, setCurrentEvent, updateData, setUpdateData } = useContext(CalendarContext)
+    const { setLoading, setError, setAddEvent, setCurrentEvent, updateData, setUpdateData } = useContext(CalendarContext)
     const [showHandle, setShowHandle] = useState(false)
 
     const handleUpdate = () => {

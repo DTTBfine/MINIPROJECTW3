@@ -1,16 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import icons from '../ultils/icons'
 import { CalendarContext } from './Homepage'
-import { apiGetEventInDate } from '../services';
-import { formatDate } from '../ultils/format';
 
 const { GrFormPrevious, GrFormNext,
     IoIosArrowDropdownCircle,
     TbSquareRoundedArrowDownFilled, TbSquareRoundedArrowUpFilled,
     TfiLayoutLineSolid
 } = icons
-
-const testData = [5, 6, 7, 10, 11, 19, 23, 24, 25, 28, 30]
 
 const VisionBoard = () => {
     const { currentDate } = useContext(CalendarContext)
@@ -20,7 +16,7 @@ const VisionBoard = () => {
     }, [currentDate])
 
     return (
-        <div className='flex flex-col flex-1 bg-white bg-opacity-70 shadow-lg h-full rounded-xl ' style={{ zIndex: 100 }}>
+        <div className='flex flex-col flex-1  h-full rounded-xl ' style={{ zIndex: 100 }}>
             <Calendar />
         </div>
     );
@@ -37,7 +33,6 @@ const Calendar = () => {
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ]
-        // Đảm bảo month nằm trong khoảng từ 1 đến 12
         if (month >= 0 && month <= 11) {
             return months[month]
         } else {
@@ -49,25 +44,18 @@ const Calendar = () => {
         const calendar = [];
         let dayCounter = 1;
 
-        // Tạo dòng cho các ngày trong tuần
         for (let i = 0; i < 6; i++) {
             const row = [];
-            // Tạo cột cho mỗi ngày trong tuần
             for (let j = 0; j < 7; j++) {
-                // Tính toán ngày của ô hiện tại
                 const day = (i * 7) + j - firstDay + 2;
-                // Kiểm tra xem có phải là ngày hợp lệ trong tháng không
                 const isValidDay = dayCounter <= totalDays && day >= 1;
-                // Thêm ô vào hàng
                 row.push(
                     <td key={j} className=''>
                         {isValidDay ? <DateItem text={dayCounter++} /> : <DateItem text={''} />}
                     </td>
                 );
             }
-            // Thêm dòng vào lịch
             calendar.push(<tr key={i}>{row}</tr>);
-            // Nếu đã hiển thị tất cả các ngày trong tháng, dừng vòng lặp
             if (dayCounter > totalDays) break;
         }
 
@@ -107,7 +95,7 @@ const Calendar = () => {
             </div>
             <div className='w-[65%] flex items-center justify-between py-5'>
                 <GrFormPrevious size='24' onClick={handlePrev} />
-                <p className={currentDate.getMonth() === initDate.getMonth() && currentDate.getFullYear() === initDate.getFullYear() && 'font-medium text-blue-600'}>
+                <p className={currentDate.getMonth() === initDate.getMonth() && currentDate.getFullYear() === initDate.getFullYear() && 'font-medium text-blue-700'}>
                     {convertMonthToString(currentDate.getMonth()) + ' ' + currentDate.getFullYear()}
                 </p>
                 <GrFormNext size='24' onClick={handleNext} />
@@ -115,13 +103,13 @@ const Calendar = () => {
             <table id="calendar" className='p-[20px] '>
                 <thead>
                     <tr className='font-medium'>
-                        <th className='font-medium text-gray-400 '>T2</th>
-                        <th className='font-medium text-gray-400 '>T3</th>
-                        <th className='font-medium text-gray-400 '>T4</th>
-                        <th className='font-medium text-gray-400 '>T5</th>
-                        <th className='font-medium text-gray-400 '>T6</th>
-                        <th className='font-medium text-gray-400 '>T7</th>
-                        <th className='font-medium text-gray-400 '>CN</th>
+                        <th className='font-medium text-gray-100 '>T2</th>
+                        <th className='font-medium text-gray-100 '>T3</th>
+                        <th className='font-medium text-gray-100 '>T4</th>
+                        <th className='font-medium text-gray-100 '>T5</th>
+                        <th className='font-medium text-gray-100 '>T6</th>
+                        <th className='font-medium text-gray-100 '>T7</th>
+                        <th className='font-medium text-gray-100 '>CN</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -134,10 +122,10 @@ const Calendar = () => {
 }
 
 const DateItem = ({ text }) => {
-    const { currentDate, setCurrentDate, theme, error, setError, loading, setLoading, eventsInDate, setEventsInDate, events } = useContext(CalendarContext)
+    const { currentDate, setCurrentDate, theme, events } = useContext(CalendarContext)
 
     const notActive = theme === 'round' ? 'relative w-[46px] h-[46px] rounded-[50%] flex flex-col gap-0 items-center justify-center m-[7px]' : 'w-[58px] h-[90px] flex flex-col gap-0 items-center justify-between border border-gray-300 rounded-md m-[1px] '
-    const Active = theme === 'round' ? 'relative w-[46px] h-[46px] rounded-[50%] flex flex-col gap-0 items-center justify-center bg-blue-700 hover:opacity-80 text-white cursor-pointer m-[7px]' : 'w-[58px] h-[90px] bg-blue-50 flex flex-col gap-0 items-center justify-between border-[2px] border-blue-700 rounded-md m-[1px]'
+    const Active = theme === 'round' ? 'relative w-[46px] h-[46px] rounded-[50%] flex flex-col gap-0 items-center justify-center bg-blue-700 hover:opacity-80 text-white cursor-pointer m-[7px]' : 'w-[58px] h-[90px] bg-pink-100 flex flex-col gap-0 items-center justify-between border-[2px] border-blue-700 rounded-md m-[1px]'
 
     const handleChangeDate = () => {
         if (!(text === '')) {

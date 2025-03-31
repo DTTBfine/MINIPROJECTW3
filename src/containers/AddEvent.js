@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, InputForm } from '../components';
 import { CalendarContext } from './Homepage';
 import { useSelector } from 'react-redux';
@@ -11,7 +11,7 @@ const { GrFormNextLink } = icons
 function AddEvent() {
     const { currentDate, setAddEvent, updateData, setUpdateData, currentEvent, setCurrentEvent } = useContext(CalendarContext)
     const { currentData } = useSelector(state => state.user)
-    const [invalidFields, setInvalidFields] = useState([]) //mảng chứa những trường không hợp lệ
+    const [invalidFields, setInvalidFields] = useState([])
     const [currentField, setCurrentField] = useState('')
     const [payload, setPayload] = useState({
         id: currentEvent?.id || '',
@@ -34,6 +34,10 @@ function AddEvent() {
     }, [currentDate])
 
     useEffect(() => {
+        setInvalidFields([])
+    }, [currentEvent])
+
+    useEffect(() => {
         setPayload({
             id: currentEvent?.id || '',
             e_name: currentEvent?.e_name || '',
@@ -52,7 +56,7 @@ function AddEvent() {
     console.log('payload: ' + JSON.stringify(payload))
 
     const isValidTime = (timeString) => {
-        // Biểu thức chính quy kiểm tra định dạng HH:MM:SS
+        // Kiểm tra định dạng HH:MM:SS
         const regex = /^([01]?[0-9]|2[0-3]):([0-5]?[0-9]):([0-5]?[0-9])$/;
 
         return regex.test(timeString);
@@ -101,8 +105,6 @@ function AddEvent() {
 
 
     const handleSubmit = () => {
-        //Thêm bước validate payload 
-
         const fetchAddEvent = async () => {
             setLoading(true);
             try {

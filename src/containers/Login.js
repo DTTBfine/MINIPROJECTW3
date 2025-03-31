@@ -11,7 +11,7 @@ const Login = () => {
     const navigate = useNavigate()
     const { isLoggedIn, msg, update } = useSelector(state => state.auth)
     const [isRegister, setIsRegister] = useState(location.state?.flag)
-    const [invalidFields, setInvalidFields] = useState([]) //mảng chứa những trường không hợp lệ
+    const [invalidFields, setInvalidFields] = useState([])
     const [currentField, setCurrentField] = useState('')
     const [payload, setPayload] = useState({
         sdt: '',
@@ -50,8 +50,8 @@ const Login = () => {
     }
 
     const validate = (payload) => {
-        let invalids = 0 //đếm số trường không hợp lệ
-        let fields = Object.entries(payload) //hàm chuyển 1 object thành mảng
+        let invalids = 0
+        let fields = Object.entries(payload)
 
         const pattern = /^\d{10}$/;
 

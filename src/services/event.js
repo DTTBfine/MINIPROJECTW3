@@ -1,6 +1,7 @@
 import axiosConfig from '../axiosConfig'
 
 export const apiAddEvent = (payload) => new Promise(async (resolve, reject) => {
+    console.log('Api thêm lịch trình')
     try {
         const response = await axiosConfig({
             method: 'post',
@@ -14,6 +15,7 @@ export const apiAddEvent = (payload) => new Promise(async (resolve, reject) => {
 })
 
 export const apiUpdateEvent = (payload) => new Promise(async (resolve, reject) => {
+    console.log('Api chỉnh sửa lịch trình')
     try {
         const response = await axiosConfig({
             method: 'post',
@@ -27,6 +29,7 @@ export const apiUpdateEvent = (payload) => new Promise(async (resolve, reject) =
 })
 
 export const apiDeleteEvent = (payload) => new Promise(async (resolve, reject) => {
+    console.log('Api xóa lịch trình')
     try {
         const response = await axiosConfig({
             method: 'post',
@@ -40,6 +43,7 @@ export const apiDeleteEvent = (payload) => new Promise(async (resolve, reject) =
 })
 
 export const apiGetEventInDate = (payload) => new Promise(async (resolve, reject) => {
+    console.log('Api lấy danh sách lịch trình trong ngày')
     try {
         const response = await axiosConfig({
             method: 'post',
@@ -53,6 +57,7 @@ export const apiGetEventInDate = (payload) => new Promise(async (resolve, reject
 })
 
 export const apiGetEventInMonth = (payload) => new Promise(async (resolve, reject) => {
+    console.log('Api lấy danh sách các ngày có lịch trình trong tháng')
     try {
         const response = await axiosConfig({
             method: 'post',

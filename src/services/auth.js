@@ -1,6 +1,7 @@
 import axiosConfig from '../axiosConfig'
 
 export const apiRegister = (payload) => new Promise(async (resolve, reject) => {
+    console.log('Gọi api đăng ký')
     try {
         const response = await axiosConfig({
             method: 'post',
@@ -14,6 +15,7 @@ export const apiRegister = (payload) => new Promise(async (resolve, reject) => {
 })
 
 export const apiLogin = (payload) => new Promise(async (resolve, reject) => {
+    console.log('Gọi api đăng nhập')
     try {
         const response = await axiosConfig({
             method: 'post',

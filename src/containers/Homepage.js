@@ -17,7 +17,6 @@ const Homepage = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const { isLoggedIn } = useSelector(state => state.auth)
-    const { currentData } = useSelector(state => state.user)
 
     const [updateData, setUpdateData] = useState(false)
 
@@ -43,7 +42,7 @@ const Homepage = () => {
         setLoading(true);
         try {
             const response = await apiGetEventInDate({ date: formatDate(currentDate) });
-            setEventsInDate(response.data.result);  // Giả sử API trả về data là danh sách sự kiện
+            setEventsInDate(response.data.result);
             setLoading(false);
         } catch (err) {
             setError(err);
@@ -54,9 +53,9 @@ const Homepage = () => {
     const fetchEventsInMonth = async () => {
         setLoading(true);
         try {
-            const payload = { start_date, end_date };  // Tạo payload từ currentDate
+            const payload = { start_date, end_date };
             const response = await apiGetEventInMonth(payload);
-            setEvents(response.data.result);  // Giả sử API trả về data là danh sách sự kiện
+            setEvents(response.data.result);
             setLoading(false);
         } catch (err) {
             setError(err);
@@ -103,7 +102,7 @@ const Homepage = () => {
 const Container = () => {
     const { addEvent } = useContext(CalendarContext)
     return (
-        <div className='w-full h-[640px] flex gap-4 p-4 bg-inherit relative' style={{ zIndex: 50 }}>
+        <div className='w-full flex gap-4 p-4 bg-inherit relative' style={{ zIndex: 50 }}>
             <div className={`w-1/3 h-full transition-transform duration-300 ease-in-out ${addEvent ? 'transform  translate-x-[-110%]' : ''}`}>
                 <Explore />
             </div>
