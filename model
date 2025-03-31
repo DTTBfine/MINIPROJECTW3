@@ -1,0 +1,34 @@
+CREATE TABLE Users (
+    id CHAR(36) PRIMARY KEY,
+    username VARCHAR(255),
+    password VARCHAR(255),
+    email VARCHAR(255),
+    sdt VARCHAR(20),
+    avatar VARCHAR(255),
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Events (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    e_name VARCHAR(255),
+    e_describe TEXT,
+    created_by CHAR(36),
+    e_start_time TIME,
+    e_end_time TIME,
+    e_date DATE,
+    status VARCHAR(255),
+    completed BOOLEAN DEFAULT FALSE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (created_by) REFERENCES Users(id)
+);
+
+CREATE TABLE Join_Event (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_user CHAR(36),
+    id_event INT,
+    FOREIGN KEY (id_user) REFERENCES Users(id),
+    FOREIGN KEY (id_event) REFERENCES Events(id)
+)
+
