@@ -5,7 +5,9 @@ import { CalendarContext } from './Homepage'
 const { GrFormPrevious, GrFormNext,
     IoIosArrowDropdownCircle,
     TbSquareRoundedArrowDownFilled, TbSquareRoundedArrowUpFilled,
-    TfiLayoutLineSolid
+    TfiLayoutLineSolid,
+    FaCircle,
+    BiHeartCircle
 } = icons
 
 const VisionBoard = () => {
@@ -124,8 +126,8 @@ const Calendar = () => {
 const DateItem = ({ text }) => {
     const { currentDate, setCurrentDate, theme, events } = useContext(CalendarContext)
 
-    const notActive = theme === 'round' ? 'relative w-[46px] h-[46px] rounded-[50%] flex flex-col gap-0 items-center justify-center m-[7px]' : 'w-[58px] h-[90px] flex flex-col gap-0 items-center justify-between border border-gray-300 rounded-md m-[1px] '
-    const Active = theme === 'round' ? 'relative w-[46px] h-[46px] rounded-[50%] flex flex-col gap-0 items-center justify-center bg-blue-700 hover:opacity-80 text-white cursor-pointer m-[7px]' : 'w-[58px] h-[90px] bg-pink-100 flex flex-col gap-0 items-center justify-between border-[2px] border-blue-700 rounded-md m-[1px]'
+    const notActive = theme === 'round' ? 'relative w-[46px] h-[46px] rounded-[50%] flex flex-col gap-0 items-center justify-center m-[7px]' : 'w-[58px] h-[90px] flex flex-col gap-0 items-center justify-between border border-gray-200 rounded-md m-[1px]'
+    const Active = theme === 'round' ? 'relative w-[46px] h-[46px] rounded-[50%] flex flex-col gap-0 items-center justify-center bg-blue-700 hover:opacity-80 text-white cursor-pointer m-[7px]' : 'w-[58px] h-[90px] bg-blue-500 flex flex-col gap-0 items-center justify-between border-[2px] border-blue-700 rounded-md m-[1px]'
 
     const handleChangeDate = () => {
         if (!(text === '')) {
@@ -141,7 +143,16 @@ const DateItem = ({ text }) => {
         >
             {/* <div className='absolute bottom-[17px]'>{text} </div> */}
             <div className='top-2'>{text} </div>
-            {!events[+text - 1] ? '' : theme === 'round' ? <IoIosArrowDropdownCircle className='text-sky-500 absolute bottom-[2px]' size='12' /> : <TfiLayoutLineSolid className='text-sky-600' size='28' />}
+            {!events[+text - 1] ? '' : theme === 'round' ? <IoIosArrowDropdownCircle className='text-blue-500 absolute bottom-[2px]' size='12' /> :
+                <div className='flex gap-[1px] pb-2'>
+                    {events[+text - 1] < 4 ? new Array(events[+text - 1]).fill(null).map((_, index) => (
+                        <div key={index}>
+                            <BiHeartCircle className={+text === +currentDate.getDate() ? 'text-white' : 'text-blue-500'} size={12} />
+                        </div>
+                    )) : <div className='text-white text-2xl'> .... </div>
+                    }
+                </div>
+            }
         </div>
     );
 }

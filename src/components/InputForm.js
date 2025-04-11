@@ -10,6 +10,7 @@ const InputForm = ({ currentField, setCurrentField, invalidFields, setInvalidFie
                 {lable}
             </label>
             <input
+                spellcheck="false"
                 type={type || 'text'}
                 className={`outline-none px-2 py-1 w-full border-b-[1px] bg-inherit ${currentField === keyPayload ? 'border-blue-600' : 'border-slate-300'}`}
                 value={value}

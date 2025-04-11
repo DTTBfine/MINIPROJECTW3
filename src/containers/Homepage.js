@@ -27,6 +27,7 @@ const Homepage = () => {
 
     const [currentDate, setCurrentDate] = useState(initDate)
     const [theme, setTheme] = useState('round')
+    const [font, setFont] = useState('')
     const [addEvent, setAddEvent] = useState(false)
     const [currentEvent, setCurrentEvent] = useState(null)
 
@@ -89,8 +90,8 @@ const Homepage = () => {
     }, [])
 
     return (
-        <CalendarContext.Provider value={{ initDate, currentDate, setCurrentDate, theme, setTheme, addEvent, setAddEvent, eventsInDate, setEventsInDate, events, error, setError, loading, setLoading, updateData, setUpdateData, currentEvent, setCurrentEvent }}>
-            <div className='w-full m-auto h-full flex flex-col items-center justify-start'>
+        <CalendarContext.Provider value={{ initDate, currentDate, setCurrentDate, theme, setTheme, font, setFont, addEvent, setAddEvent, eventsInDate, setEventsInDate, events, error, setError, loading, setLoading, updateData, setUpdateData, currentEvent, setCurrentEvent }}>
+            <div className={`${font} w-full m-auto h-full flex flex-col items-center justify-start`}>
                 <Header />
                 <Container />
             </div>
@@ -103,18 +104,18 @@ const Container = () => {
     const { addEvent } = useContext(CalendarContext)
     return (
         <div className='w-full flex gap-4 p-4 bg-inherit relative' style={{ zIndex: 50 }}>
-            <div className={`w-1/3 h-full transition-transform duration-300 ease-in-out ${addEvent ? 'transform  translate-x-[-110%]' : ''}`}>
+            <div className={`flex-1 lg:block hidden h-full transition-transform duration-300 ease-in-out ${addEvent ? 'transform  translate-x-[-110%]' : ''}`}>
                 <Explore />
             </div>
-            <div className={`w-1/3 h-full transition-transform duration-300 ease-in-out ${addEvent ? 'transform  translate-x-[-100%]' : ''}`}>
+            <div className={`flex-1 h-full transition-transform duration-300 ease-in-out ${addEvent ? 'transform  translate-x-[-100%]' : ''}`}>
                 <VisionBoard />
             </div>
             {
-                addEvent && <div className='absolute left-1/3 top-0 w-1/3 h-full'>
+                addEvent && <div className={`absolute left-1/3 top-0 w-1/3 h-full transition-opacity duration-5000 ${addEvent ? 'opacity-100' : 'opacity-0'}`}>
                     <AddEvent />
                 </div>
             }
-            <div className='w-1/3 h-full'>
+            <div className='flex-1 h-full'>
                 <EventToday />
             </div>
         </div>

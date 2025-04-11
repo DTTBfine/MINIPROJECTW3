@@ -62,6 +62,14 @@ function AddEvent() {
         return regex.test(timeString);
     }
 
+    const isEndTimeAfterStartTime = (start_time, end_time) => {
+        // Chuyển đổi chuỗi HH:MM:SS thành định dạng Date
+        let start = new Date('1970-01-01T' + start_time + 'Z');
+        let end = new Date('1970-01-01T' + end_time + 'Z');
+
+        return end > start;
+    }
+
     const validate = (payload) => {
         let invalids = 0
         let fields = Object.entries(payload)
@@ -91,6 +99,13 @@ function AddEvent() {
                         setInvalidFields(prev => [...prev, {
                             name: item[0],
                             message: 'Không đúng định dạng !'
+                        }])
+                        invalids++
+                    }
+                    if (!isEndTimeAfterStartTime(payload.e_start_time, item[1])) {
+                        setInvalidFields(prev => [...prev, {
+                            name: item[0],
+                            message: 'Thời gian kết thúc phải sau bắt đầu !'
                         }])
                         invalids++
                     }
@@ -161,7 +176,7 @@ function AddEvent() {
                     <div className='flex justify-around items-center'>
                         <div className='flex-col justify-center items-center'>
                             <div className='flex justify-center items-center'>{currentDate.getDay() ? `T.${currentDate.getDay() + 1}` : 'CN'}, {currentDate.getDate()}/{currentDate.getMonth() + 1}</div>
-                            <div className='flex justify-center items-center font-semibold cursor-pointer mt-1'
+                            <div className={`flex justify-center items-center font-semibold cursor-pointer mt-2 ${changeTime && time === 'start' && 'bg-blue-200 rounded-full'}`}
                                 onClick={() => {
                                     setTime('start')
                                     time === 'start' ? setChangeTime(!changeTime) : setChangeTime(true)
@@ -176,7 +191,7 @@ function AddEvent() {
                         </div>
                         <div className='flex-col justify-center items-center'>
                             <div className='flex justify-center items-center'>{currentDate.getDay() ? `T.${currentDate.getDay() + 1}` : 'CN'}, {currentDate.getDate()}/{currentDate.getMonth() + 1}</div>
-                            <div className='flex justify-center items-center font-semibold cursor-pointer mt-1'
+                            <div className={`flex justify-center items-center font-semibold cursor-pointer mt-2 ${changeTime && time === 'end' && 'bg-blue-200 rounded-full'}`}
                                 onClick={() => {
                                     setTime('end')
                                     time === 'end' ? setChangeTime(!changeTime) : setChangeTime(true)
@@ -197,6 +212,10 @@ function AddEvent() {
                                             className='outline-none bg-inherit w-[100px] text-center'
                                             value={formatTime(payload.e_start_time).hours}
                                             onChange={(e) => setPayload(prev => ({ ...prev, e_start_time: `${e.target.value}:${formatTime(payload.e_start_time).minutes}:00` }))}
+                                            onFocus={() => {
+                                                setInvalidFields([])
+                                                setCurrentField('e_start_time')
+                                            }}
                                         />
                                     </div>
                                     <div className='justify-center items-center text-center'>
@@ -208,6 +227,10 @@ function AddEvent() {
                                             className='outline-none bg-inherit w-[100px] text-center'
                                             value={formatTime(payload.e_start_time).minutes}
                                             onChange={(e) => setPayload(prev => ({ ...prev, e_start_time: `${formatTime(payload.e_start_time).hours}:${e.target.value}:00` }))}
+                                            onFocus={() => {
+                                                setInvalidFields([])
+                                                setCurrentField('e_start_time')
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -220,6 +243,10 @@ function AddEvent() {
                                             className='outline-none bg-inherit w-[100px] text-center'
                                             value={formatTime(payload.e_end_time).hours}
                                             onChange={(e) => setPayload(prev => ({ ...prev, e_end_time: `${e.target.value}:${formatTime(payload.e_end_time).minutes}:00` }))}
+                                            onFocus={() => {
+                                                setInvalidFields([])
+                                                setCurrentField('e_end_time')
+                                            }}
                                         />
                                     </div>
                                     <div className='justify-center items-center text-center'>
@@ -231,6 +258,10 @@ function AddEvent() {
                                             className='outline-none bg-inherit w-[100px] text-center'
                                             value={formatTime(payload.e_end_time).minutes}
                                             onChange={(e) => setPayload(prev => ({ ...prev, e_end_time: `${formatTime(payload.e_end_time).hours}:${e.target.value}:00` }))}
+                                            onFocus={() => {
+                                                setInvalidFields([])
+                                                setCurrentField('e_end_time')
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -263,11 +294,10 @@ function AddEvent() {
                     />
                     <Button
                         text={loading ? 'Đang xử lý' : 'Lưu'}
-                        textColor='white'
-                        bgColor={`mt-2 w-full ${loading ? 'bg-gray-400' : 'bg-blue-600 '}`}
+                        bgColor={loading && 'bg-gray-400'}
                         fullWidth
                         onClick={handleSubmit}
-                        rounded='rounded-2xl'
+                        rounded='rounded-2xl mt-2 w-full'
                         fontSize='20'
                         border='border-none shadow-lg'
                     />

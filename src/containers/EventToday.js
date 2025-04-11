@@ -1,16 +1,53 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import icons from '../ultils/icons'
-import Button from '../components/Button';
+import { Button, Loading } from '../components';
 import { CalendarContext } from './Homepage';
 import { formatTime } from '../ultils/format'
 import { apiDeleteEvent } from '../services';
+import styled from 'styled-components'
 
 const { FiPlus, HiOutlineDotsVertical } = icons
+
+const CustomScrollbarDiv = styled.div`
+  width: 100%;
+  height: 450px;
+  overflow-y: auto;
+  border-radius: 8px;
+  position: relative;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+
+  /* Custom thanh trượt */
+  &::-webkit-scrollbar {
+    width: 8px; /* Chiều rộng của thanh cuộn */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Màu nền của đường ray */
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #6495ED; /* Màu của thanh cuộn */
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #4169E1; /* Màu của thanh cuộn khi hover */
+  }
+`;
 
 const EventToday = () => {
     const { currentDate, addEvent, setAddEvent, eventsInDate, loading, currentEvent, setCurrentEvent } = useContext(CalendarContext)
 
     console.log('event in date ' + JSON.stringify(eventsInDate))
+
+    const [disableButton, setDisableButton] = useState(false)
+
+    useEffect(() => {
+        setDisableButton(addEvent && !currentEvent)
+    }, [addEvent, currentEvent])
 
     return (
         <div className='flex flex-col flex-1 h-full rounded-xl items-center justify-between p-2'>
@@ -24,10 +61,13 @@ const EventToday = () => {
                     </p>
                 </div>
 
-                <div className='w-full min-h-[450px]  rounded-md my-4 p-3 '>
-                    {loading && <p>Loading...</p>}
+                <CustomScrollbarDiv>
+                    {loading && <div className='w-full flex flex-col items-center justify-center gap-1 absolute'>
+                        <Loading />
+                        <p className='text-xs text-blue-500'>Đang tải dữ liệu ...</p>
+                    </div>}
                     {/* {error && <p className='text-xs text-red-900'>Có lỗi xảy ra, vui lòng reload lại trang...</p>} */}
-                    {eventsInDate.length === 0 ? <p className='text-gray-400 text-sm'>
+                    {eventsInDate.length === 0 ? <p className='text-gray-500 text-sm'>
                         Lịch trình trống!
                     </p> : eventsInDate.map((item, index) => {
                         return (
@@ -37,13 +77,13 @@ const EventToday = () => {
                         )
                     })
                     }
-                </div>
+                </CustomScrollbarDiv>
             </div>
             <div className='w-full'>
                 <Button
                     text='Thêm sự kiện'
-                    textColor='white'
-                    bgColor={!addEvent ? 'bg-blue-600' : currentEvent ? 'bg-blue-600' : 'bg-slate-300'}
+                    disable={disableButton}
+                    bgColor={addEvent && !currentEvent && 'bg-slate-300'}
                     IcBefore={FiPlus}
                     fullWidth
                     onClick={() => {
@@ -63,10 +103,15 @@ const EventItem = ({ event }) => {
     const { setLoading, setError, setAddEvent, setCurrentEvent, updateData, setUpdateData } = useContext(CalendarContext)
     const [showHandle, setShowHandle] = useState(false)
 
+    useEffect(() => {
+        setShowHandle(false)
+    }, [updateData])
+
     const handleUpdate = () => {
         console.log('Xử lý chỉnh sửa thông tin lịch trình: ' + event.id)
         setCurrentEvent(event)
         setAddEvent(true)
+        setShowHandle(false)
         //Mở form chỉnh sửa
     }
 
@@ -79,6 +124,8 @@ const EventItem = ({ event }) => {
                 const response = await apiDeleteEvent({
                     id: event.id
                 });
+
+                setUpdateData(!updateData)
                 setLoading(false);
             } catch (err) {
                 setError(err);
@@ -88,7 +135,8 @@ const EventItem = ({ event }) => {
 
         fetchDeleteEvent()
 
-        setUpdateData(!updateData)
+        setShowHandle(false)
+        setAddEvent(false)
     }
 
     return (
@@ -114,7 +162,8 @@ const EventItem = ({ event }) => {
                     onClick={handleUpdate}>
                     Chỉnh sửa
                 </div>
-                <div className='text-center cursor-pointer font-medium bg-gradient-to-br from-pink-600 to-blue-800 bg-clip-text text-transparent hover:bg-gradient-to-br hover:from-blue-600 hover:to-pink-500 ' onClick={handleDelete}>
+                <div className='text-center cursor-pointer font-medium bg-gradient-to-br from-pink-600 to-blue-800 bg-clip-text text-transparent hover:bg-gradient-to-br hover:from-blue-600 hover:to-pink-500 '
+                    onClick={handleDelete}>
                     Xóa
                 </div>
             </div>}

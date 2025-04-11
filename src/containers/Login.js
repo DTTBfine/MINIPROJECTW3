@@ -118,9 +118,9 @@ const Login = () => {
     }
 
     return (
-        <div className='bg-slate-100 bg-opacity-30 w-[600px] p-[30px] pb-[100px] my-[100px] rounded-xl shadow-lg '>
+        <div className='font-serif bg-slate-100 bg-opacity-20 w-[600px] p-[30px] pb-[100px] my-[100px] rounded-xl shadow-lg '>
             <div className='w-full mb-[20px]'>
-                <div className='uppercase font-semibold text-2xl text-blue-800 flex items-center justify-center' >{isRegister ? 'Đăng ký tài khoản' : 'Đăng nhập'}</div>
+                <div className='uppercase font-semibold text-2xl bg-gradient-to-r from-blue-800 to-pink-600 bg-clip-text text-transparent flex items-center justify-center' >{isRegister ? 'Đăng ký tài khoản' : 'Đăng nhập'}</div>
             </div>
             <div>
                 <div className='w-full flex flex-col gap-3 pb-5'>
@@ -138,8 +138,8 @@ const Login = () => {
                 </div>
                 <Button
                     text={isRegister ? 'Đăng ký' : 'Đăng nhập'}
-                    bgColor='bg-blue-800 rounded-full hover:bg-blue-400'
                     textColor='text-white font-medium'
+                    rounded='rounded-full'
                     fullWidth
                     onClick={handleSubmit}
                 />
