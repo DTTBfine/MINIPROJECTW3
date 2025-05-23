@@ -1,5 +1,19 @@
 import axiosConfig from '../axiosConfig'
 
+export const apiGetEventById = (payload) => new Promise(async (resolve, reject) => {
+    console.log('Api lấy lịch trình theo id')
+    try {
+        const response = await axiosConfig({
+            method: 'post',
+            url: '/api/event/get-event-by-id',
+            data: payload
+        })
+        resolve(response)
+    } catch (error) {
+        reject(error)
+    }
+})
+
 export const apiAddEvent = (payload) => new Promise(async (resolve, reject) => {
     console.log('Api thêm lịch trình')
     try {

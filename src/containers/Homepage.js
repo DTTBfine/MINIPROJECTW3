@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import AddEvent from './AddEvent';
 import { apiGetEventInDate, apiGetEventInMonth } from '../services';
 import { formatDate } from '../ultils/format';
+import Swal from 'sweetalert2';
+import { path } from '../ultils/constant';
 
 export const CalendarContext = createContext()
 const initDate = new Date()
@@ -16,7 +18,7 @@ const initDate = new Date()
 const Homepage = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const { isLoggedIn } = useSelector(state => state.auth)
+    const { isLoggedIn, lastLogin } = useSelector(state => state.auth)
 
     const [updateData, setUpdateData] = useState(false)
 
@@ -24,6 +26,23 @@ const Homepage = () => {
         !isLoggedIn && navigate('/login')
     }, [])
 
+    useEffect(() => {
+        const currentTime = Date.now()
+        const twoDaysInMillis = 2 * 24 * 60 * 60 * 1000;  // 2 ngày tính bằng mili giây
+        const fiveMinutes = 5 * 60 * 1000
+
+        if (currentTime - lastLogin > twoDaysInMillis) {
+            // dispatch(actions.logout())
+            // navigate('/login')
+            Swal.fire('Oops !', 'Hết phiên làm việc, vui lòng đăng nhập lại', 'error')
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        dispatch(actions.logout())
+                        navigate(path.LOGIN)
+                    }
+                });
+        }
+    }, [])
 
     const [currentDate, setCurrentDate] = useState(initDate)
     const [theme, setTheme] = useState('round')
@@ -103,7 +122,7 @@ const Homepage = () => {
 const Container = () => {
     const { addEvent } = useContext(CalendarContext)
     return (
-        <div className='w-full flex gap-4 p-4 bg-inherit relative' style={{ zIndex: 50 }}>
+        <div className='w-full flex flex-col md:flex-row gap-4 p-4 bg-inherit relative' style={{ zIndex: 50 }}>
             <div className={`flex-1 lg:block hidden h-full transition-transform duration-300 ease-in-out ${addEvent ? 'transform  translate-x-[-110%]' : ''}`}>
                 <Explore />
             </div>

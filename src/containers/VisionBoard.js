@@ -149,7 +149,7 @@ const DateItem = ({ text }) => {
                         <div key={index}>
                             <BiHeartCircle className={+text === +currentDate.getDate() ? 'text-white' : 'text-blue-500'} size={12} />
                         </div>
-                    )) : <div className='text-white text-2xl'> .... </div>
+                    )) : <div className={`${+text === +currentDate.getDate() ? 'text-white' : 'text-blue-500'} text-2xl `}> .... </div>
                     }
                 </div>
             }

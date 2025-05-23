@@ -29,10 +29,12 @@ export const login = (payload) => async (dispatch) => {
     try {
         const response = await apis.apiLogin(payload)
         if (response?.data.err === 0) {
+            const curDate = Date.now()
             dispatch({
                 type: actionTypes.LOGIN_SUCCESS,
                 data: response.data.token,
-                id: response.data.id
+                id: response.data.id,
+                lastLogin: curDate
             })
         } else {
             dispatch({

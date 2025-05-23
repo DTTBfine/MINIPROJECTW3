@@ -3,8 +3,10 @@ import icons from '../ultils/icons'
 import { Button, Loading } from '../components';
 import { CalendarContext } from './Homepage';
 import { formatTime } from '../ultils/format'
-import { apiDeleteEvent } from '../services';
+import { apiDeleteEvent, apiGetEventById } from '../services';
 import styled from 'styled-components'
+import Swal from 'sweetalert2'
+import { useSelector } from 'react-redux';
 
 const { FiPlus, HiOutlineDotsVertical } = icons
 
@@ -48,6 +50,8 @@ const EventToday = () => {
     useEffect(() => {
         setDisableButton(addEvent && !currentEvent)
     }, [addEvent, currentEvent])
+
+    const { lastLogin } = useSelector(state => state.auth)
 
     return (
         <div className='flex flex-col flex-1 h-full rounded-xl items-center justify-between p-2'>
@@ -100,17 +104,42 @@ const EventToday = () => {
 }
 
 const EventItem = ({ event }) => {
-    const { setLoading, setError, setAddEvent, setCurrentEvent, updateData, setUpdateData } = useContext(CalendarContext)
+    const { currentDate, setLoading, setError, setAddEvent, setCurrentEvent, updateData, setUpdateData } = useContext(CalendarContext)
     const [showHandle, setShowHandle] = useState(false)
 
     useEffect(() => {
         setShowHandle(false)
-    }, [updateData])
+    }, [updateData, currentDate])
 
     const handleUpdate = () => {
         console.log('Xử lý chỉnh sửa thông tin lịch trình: ' + event.id)
-        setCurrentEvent(event)
-        setAddEvent(true)
+
+        const fetchGetEventById = async () => {
+            setLoading(true);
+            try {
+                const response = await apiGetEventById({
+                    id: event.id
+                });
+
+                if (response.data.msg === 'Lịch trình này không còn tồn tại !') {
+                    Swal.fire('Oops !', 'Lịch trình này vừa bị xóa trước đó', 'error')
+                    setAddEvent(false)
+                }
+                else {
+                    setCurrentEvent(event)
+                    setAddEvent(true)
+                }
+
+                setUpdateData(!updateData)
+                setLoading(false);
+            } catch (err) {
+                setError(err);
+                setLoading(false);
+            }
+        };
+
+        fetchGetEventById()
+
         setShowHandle(false)
         //Mở form chỉnh sửa
     }

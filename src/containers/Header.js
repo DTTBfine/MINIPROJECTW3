@@ -48,13 +48,14 @@ const Header = () => {
     console.log('font: ' + font)
 
     return (
-        <div className='w-full h-[100px] flex justify-between p-[20px]'>
-            <div className='flex items-start gap-2'>
+        <div className='w-full min-h-[100px] flex flex-col sm:flex-row justify-between p-[20px]'>
+            <div className='flex flex-col lg:flex-row items-start'>
                 <div className='text-6xl font-bold bg-gradient-to-r from-pink-600 via-blue-800 to-pink-600 bg-clip-text text-transparent'>
                     SMARTLIFE
                 </div>
-                <MdManageHistory size={40} color='purple' className='pl-[8px] pt-[8px]' />
-                <div className='font-semibold text-gray-600 pt-[8px]'>Lập lịch và quản lý thông minh</div>
+                <div className='flex text-start gap-2 font-semibold text-gray-600 pt-[8px]'>
+                    <MdManageHistory size={40} color='purple' className='pl-[8px] pt-[8px]' />
+                    Lập lịch và quản lý thông minh</div>
             </div>
             <div className=''>
                 <div className='flex fixed right-[-50px] gap-4'>
