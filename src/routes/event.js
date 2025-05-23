@@ -5,6 +5,7 @@ import verifyToken from '../middlewares/verifyToken'
 const router = express.Router()
 
 // router.use(verifyToken)
+router.post('/get-event-by-id', verifyToken, eventController.getEventById)
 router.post('/add-event', verifyToken, eventController.addEvent)
 router.post('/update-event', verifyToken, eventController.updateEvent)
 router.post('/mark-event', verifyToken, eventController.markedEvent)

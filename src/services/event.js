@@ -3,6 +3,39 @@ import { formatDate } from '../ultils/format'
 
 const database = require('../config/Database')
 
+export const getEventById = (userId, id) => new Promise(async (resolve, reject) => {
+    try {
+        let sql, params
+
+        sql = `SELECT * FROM events WHERE id = ?  AND created_by = ?;`
+        params = [id, userId]
+
+        database.query(sql, params, async (err, result) => {
+            if (err) {
+                resolve({
+                    err: 2,
+                    msg: err.message
+                })
+            }
+            else if (result.length === 0) {
+                resolve({
+                    err: 0,
+                    msg: 'Lịch trình này không còn tồn tại !'
+                })
+            }
+            else {
+                resolve({
+                    err: 0,
+                    msg: 'Lấy thông tin thành công !',
+                    result
+                })
+            }
+        })
+    } catch (error) {
+        reject(error)
+    }
+})
+
 export const addEvent = (e_name, e_describe, created_by, e_start_time, e_end_time, e_date, status) => new Promise(async (resolve, reject) => {
     // console.log('payload: ' + { e_name, e_describe, e_start_time, e_end_time, e_date, status, created_by })
     try {

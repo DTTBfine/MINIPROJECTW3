@@ -1,5 +1,28 @@
 import * as eventService from '../services/event'
 
+export const getEventById = async (req, res) => {
+    const userId = req.user.id
+    const { id } = req.body
+
+    try {
+        if (!userId) return res.status(400).json({
+            err: 1,
+            msg: 'Missing id uesr input !'
+        })
+        if (!id) return res.status(400).json({
+            err: 1,
+            msg: 'Missing id event input !'
+        })
+        const response = await eventService.getEventById(userId, id)
+        return res.status(200).json(response)
+    } catch (error) {
+        return res.status(500).json({
+            err: -1,
+            msg: 'Fail at event controller: ' + error
+        })
+    }
+}
+
 export const addEvent = async (req, res) => {
     const created_by = req.user.id
     const { e_name, e_describe, e_start_time, e_end_time, e_date, status } = req.body
