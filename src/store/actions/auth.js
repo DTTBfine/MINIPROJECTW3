@@ -4,11 +4,13 @@ import * as apis from '../../services'
 export const register = (payload) => async (dispatch) => {
     try {
         const response = await apis.apiRegister(payload)
-        if (response?.data.err === 0) {
+        if (response?.data.err === 0) {            
+            const curDate = Date.now()
             dispatch({
                 type: actionTypes.REGISTER_SUCCESS,
                 data: response.data.token,
-                id: response.data.id
+                id: response.data.id,
+                lastLogin: curDate
             })
         } else {
             dispatch({
